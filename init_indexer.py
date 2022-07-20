@@ -3,6 +3,8 @@ from collections import Counter
 from itertools import chain
 
 from tqdm.notebook import tqdm
+from typing import List, Tuple, Dict, Any, Generator
+from token_KoMRC import TokenizedKoMRC
 
 class Indexer:
     def __init__(self,

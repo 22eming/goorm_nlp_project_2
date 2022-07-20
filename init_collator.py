@@ -1,5 +1,7 @@
 import torch
 from torch.nn.utils.rnn import pad_sequence
+from init_indexer import Indexer, IndexerWrappedDataset
+from typing import List, Tuple, Dict, Any, Generator
 
 class Collator:
     def __init__(self, indexer: Indexer) -> None:
