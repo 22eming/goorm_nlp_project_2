@@ -1,7 +1,7 @@
 from typing import Generator
 
-from init_KoMRC import KoMRC
 import konlpy
+from init_KoMRC import KoMRC
 
 class TokenizedKoMRC(KoMRC):
     def __init__(self, data, indices: List[Tuple[int, int, int]]) -> None:
