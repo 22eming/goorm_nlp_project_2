@@ -1,5 +1,6 @@
-from typing import Generator
-
+from typing import List, Tuple, Dict, Any, Generator
+import json
+import random
 import konlpy
 from init_KoMRC import KoMRC
 
