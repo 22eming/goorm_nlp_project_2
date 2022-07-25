@@ -50,3 +50,13 @@ def return2distance(data1 = "dev.csv", data2 = "baseline.csv"):
         diff.append(levenshtein(s1, s2))
 
     return sum(diff) / len(diff)
+
+def kobig_pd_save_dev():
+    import csv
+    with open("dev.csv", 'w') as fd:
+        writer = csv.writer(fd)
+        writer.writerow(['Id', 'Predicted'])
+
+        rows = [[validation.loc[i]['guid'], validation.loc[i]['text'][0]] for i in range(len(validation)) ]
+
+        writer.writerows(rows)

@@ -109,12 +109,13 @@ def main(config):
       train = pickle.load(fr)
     with open(os.path.join(config.file_path, 'preprocessed_validation.pickle'), 'rb') as fr:
       valid = pickle.load(fr)
-
+    validation = pd.read_pickle(os.path.join(config.file_path, 'validation.pkl'))
+    
     train_dataset = QADataset(train['input_ids'], train['token_type_ids'], train['attention_mask'], train['start_positions'], train['end_positions'])
     validation_dataset = QADatasetValid(valid['input_ids'], valid['token_type_ids'], valid['attention_mask'], valid['offset_mapping'], valid['example_id'])
     print(len(train_dataset), len(validation_dataset))
 
-    total_batch_size = config.batch_size_per_device * torch.cuda.device_count() if torch.cuda.is_available() else 1
+    total_batch_size = config.batch_size_per_device
     n_total_iterations = int(len(train_dataset) / total_batch_size * config.n_epochs)
     n_warmup_steps = int(n_total_iterations * config.warmup_ratio)
     print('#total_iters =', n_total_iterations, '#warmup_iters =', n_warmup_steps)
