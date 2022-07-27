@@ -54,7 +54,7 @@ def compute_metrics(start_logits, end_logits, features, examples):
     predictions = collections.OrderedDict()
 
     for i in range(len(examples)):
-        example_id = examples.loc[i]["question_id"]
+        example_id = examples.loc[i]["guid"]
         context = examples.loc[i]["context"]
         answers = []
 
@@ -85,15 +85,15 @@ def compute_metrics(start_logits, end_logits, features, examples):
           best_answer = {"text": "", "score": 0.0}
 
         answer = best_answer["text"]
-        predictions[examples.loc[i]["question_id"]] = answer  
+        predictions[examples.loc[i]["guid"]] = answer  
     
     predicted_answers = [{"id": k, "prediction_text": v, "no_answer_probability": 0.0} for k, v in predictions.items()]
     theoretical_answers = []
     for i in range(len(examples)):
       if len(examples.loc[i]["text"]) == 0:
-        theoretical_answers.append({"id": examples.loc[i]["question_id"], "answers": {'text': [""], 'answer_start': examples.loc[i]['answer_start']}})
+        theoretical_answers.append({"id": examples.loc[i]["guid"], "answers": {'text': [""], 'answer_start': examples.loc[i]['answer_start']}})
       else:
-        theoretical_answers.append({"id": examples.loc[i]["question_id"], "answers": {'text': examples.loc[i]["text"], 'answer_start': examples.loc[i]['answer_start']}})
+        theoretical_answers.append({"id": examples.loc[i]["guid"], "answers": {'text': examples.loc[i]["text"], 'answer_start': examples.loc[i]['answer_start']}})
     
     result = metric.compute(predictions=predicted_answers, references=theoretical_answers)
 
