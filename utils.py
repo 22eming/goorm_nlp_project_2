@@ -44,8 +44,11 @@ def return2distance(data1 = "dev.csv", data2 = "baseline.csv"):
     diff = []
 
     for s1, s2 in zip(df1['Predicted'], df2['Predicted']):
+        if type(s1) == float:
+            s1 = str(s1)
+            
         if type(s2) == float:
-            s2 = ""
+            s2 = str(s2)
     
         diff.append(levenshtein(s1, s2))
 
