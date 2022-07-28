@@ -126,7 +126,7 @@ def main(config):
 
     # fine-tuning using huggingface trainer
     training_args = TrainingArguments(
-        output_dir='./.checkpoints',
+        output_dir='checkpoints',
         num_train_epochs=config.n_epochs,
         per_device_train_batch_size=config.batch_size_per_device,
         per_device_eval_batch_size=config.batch_size_per_device,
