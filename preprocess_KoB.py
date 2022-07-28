@@ -17,6 +17,11 @@ def define_argparser():
         '--data_path',
         required=True,
         help="Directory where data files located.")
+    
+    p.add_argument(
+        '--train_data_fn',
+        default="train.json",
+        help="Directory where data files located.")
 
     p.add_argument(
         "--save_path",
@@ -137,7 +142,7 @@ def main(config):
     savepath = config.save_path
 
     # read data files into dataframe
-    train = pd.read_json(os.path.join(datapath, 'train.json'))
+    train = pd.read_json(os.path.join(datapath, config.train_data_fn))
     test = pd.read_json(os.path.join(datapath, 'test.json'))
 
     # train data
