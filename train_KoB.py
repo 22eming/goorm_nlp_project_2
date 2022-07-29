@@ -26,7 +26,7 @@ def define_argparser():
                     help="File name to save trained model.")
 
     p.add_argument('--file_path',
-                    default=='data/',
+                    default='data/',
                     help="Directory where preprocessed data files located.")
 
     p.add_argument('--pretrained_model_name', 
