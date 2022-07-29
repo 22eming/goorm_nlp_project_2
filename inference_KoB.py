@@ -25,8 +25,8 @@ def define_argparser():
     p = argparse.ArgumentParser()
 
     p.add_argument('--model_fn', required=True)
-    p.add_argument('--file_path', required=True)
-    p.add_argument('--pretrained_model_name', required=True)
+    p.add_argument('--file_path', default='data/')
+    p.add_argument('--pretrained_model_name', default=='monologg/kobigbird-bert-base')
     p.add_argument('--batch_size', type=int, default=16)
     p.add_argument('--n_best', type=int, default=5)
     p.add_argument('--max_answer_length', type=int, default=40)

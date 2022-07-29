@@ -26,11 +26,10 @@ def define_argparser():
                     help="File name to save trained model.")
 
     p.add_argument('--file_path',
-                    required=True,
+                    default=='data/',
                     help="Directory where preprocessed data files located.")
 
     p.add_argument('--pretrained_model_name', 
-                    required=True,
                     default='monologg/kobigbird-bert-base',
                     help="Set pretrained model. (Examples: klue/bert-base, monologg/kobert, ...")
 

@@ -15,7 +15,7 @@ def define_argparser():
 
     p.add_argument(
         '--data_path',
-        required=True,
+        default="data/",
         help="Directory where data files located.")
     
     p.add_argument(
@@ -25,7 +25,7 @@ def define_argparser():
 
     p.add_argument(
         "--save_path",
-        required=True,
+        default="data/",
         help="Directory to save preprocessed dataset.")
 
     p.add_argument(
@@ -35,7 +35,6 @@ def define_argparser():
         help="Set test size. Input float number")
 
     p.add_argument('--pretrained_model_name', 
-                    required=True,
                     default='monologg/kobigbird-bert-base',
                     help="Set pretrained model. (Examples: klue/bert-base, monologg/kobert, ...")
     
