@@ -36,7 +36,7 @@ def define_argparser():
 
     p.add_argument('--pretrained_model_name', 
                     default='monologg/kobigbird-bert-base',
-                    help="Set pretrained model. (Examples: klue/bert-base, monologg/kobert, ...")
+                    help="Set pretrained model. (monologg/koelectra-base-v3-finetuned-korquad")
     
     p.add_argument('--max_length', type=int, default=384)
     p.add_argument('--stride', type=int, default=50)
