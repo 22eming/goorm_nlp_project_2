@@ -1,8 +1,16 @@
 #%%
 import pandas as pd
+import os
 from collections import defaultdict
 
-df = pd.read_csv('data/merge_067.csv')
+dataframe_list = os.listdir('vote_1')
+df = pd.read_csv('vote_1/'+dataframe_list[0])
+for idx, df_list in enumerate(dataframe_list[1:]):
+    if df_list[0] == ".":
+        continue
+    # print(pd.read_csv('vote/'+df_list)['Predicted'])
+    df[f'Predicted{idx}'] = pd.read_csv('vote_1/'+df_list)['Predicted']
+
 
 #%%
 def vote(user_input, dic):
@@ -30,7 +38,7 @@ for i in range(len(df)):
     df.loc[i,'result'] = max_key[-1]
 
 #%%
-df.to_csv("baseline.csv", mode='w', index=False, encoding='utf-8')
+df.to_csv("dev_merge.csv", mode='w', index=False, encoding='utf-8')
 # %%
 from utils import levenshtein
 
@@ -43,7 +51,7 @@ def return2distance(data1 = "dev.csv", data2 = "baseline.csv"):
 
     diff = []
 
-    for s1, s2 in zip(df1['result'], df2['result']):
+    for s1, s2 in zip(df1['result'], df2['Predicted']):
         if type(s2) == float:
             s2 = ""
         if type(s1) == float:
@@ -53,5 +61,5 @@ def return2distance(data1 = "dev.csv", data2 = "baseline.csv"):
 
     return sum(diff) / len(diff)
 
-print(return2distance("baseline.csv","data/merge_067.csv"))
+print(return2distance("dev_merge.csv","data/dev.csv"))
 # %%
