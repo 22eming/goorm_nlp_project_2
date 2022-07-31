@@ -120,7 +120,7 @@ def main(config):
             predicted_answers.append({"id": example_id, "prediction_text": ""}) 
 
     os.makedirs('out', exist_ok=True)
-    with open(f'out/{config.model_fn}_{config.max_answer_length}', 'w') as fd:
+    with open(f'out/{config.model_fn}_{config.max_answer_length}.csv', 'w') as fd:
       writer = csv.writer(fd)
       writer.writerow(['Id', 'Predicted'])  
       rows = []       
