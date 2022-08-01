@@ -31,7 +31,7 @@ for i in range(len(df)):
     dic = defaultdict(float)
     seq = df.iloc[i].to_list()[2:-1]
     for s in seq:
-        dic = vote(s, dic, len(seq)-1)
+        dic = vote(s, dic, len(seq)-2)
     
     if len(dic.values()) == 0:
         max_key = [""]
