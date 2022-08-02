@@ -5,21 +5,25 @@ from collections import defaultdict
 
 #%%
 config = {
-    "data_path" : "vote_1/",
+    "data_path" : "vote_all/",
     "del_code" : ["merge","news"],
     "alpa" : 0.26,
+    "dev_csv" : 'data/dev.csv',
+    "best_fit" : 'merge11.csv',
+    
     
 }
 
 #%%
 
+#%%
 dataframe_list = os.listdir(config['data_path'])
 df = pd.read_csv(config['data_path'] + dataframe_list[0])
 for idx, df_list in enumerate(dataframe_list[1:]):
     if df_list[0] == ".":
         continue
-    # if filter(lambda x: x in df_list, config['del_code']):
-    #     continue
+    if [1 for dc in config['del_code'] if dc in df_list]:
+        continue
 
     df[f'Predicted{idx}'] = pd.read_csv(config['data_path']+df_list)['Predicted']
     
@@ -82,17 +86,25 @@ def return2distance(data1 = "dev.csv", data2 = "baseline.csv"):
         print(e)
 
     diff = []
-
-    for s1, s2 in zip(df1['Predicted'], df2['Predicted']):
-        if type(s2) == float:
-            s2 = ""
-        if type(s1) == float:
-            s1 = ""
-    
-        diff.append(levenshtein(s1, s2))
+    try:
+        for s1, s2 in zip(df1['Predicted'], df2['Predicted']):
+            if type(s2) == float:
+                s2 = ""
+            if type(s1) == float:
+                s1 = ""
+        
+            diff.append(levenshtein(s1, s2))
+    except:
+        for s1, s2 in zip(df1['result'], df2['Predicted']):
+            if type(s2) == float:
+                s2 = ""
+            if type(s1) == float:
+                s1 = ""
+        
+            diff.append(levenshtein(s1, s2))
 
     return sum(diff) / len(diff)
 
-print(return2distance("data/dev.csv","all_new.csv"))
+print(return2distance(config['best_fit'],"all_new.csv"))
 
 # %%
