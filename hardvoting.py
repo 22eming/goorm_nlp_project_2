@@ -4,35 +4,50 @@ import os
 from collections import defaultdict
 
 #%%
-dataframe_list = os.listdir('vote_1')
-df = pd.read_csv('vote_1/'+dataframe_list[0])
+config = {
+    "data_path" : "vote_1/",
+    "del_code" : ["merge","news"],
+    "alpa" : 0.26,
+    
+}
+
+#%%
+
+dataframe_list = os.listdir(config['data_path'])
+df = pd.read_csv(config['data_path'] + dataframe_list[0])
 for idx, df_list in enumerate(dataframe_list[1:]):
     if df_list[0] == ".":
         continue
-    # print(pd.read_csv('vote/'+df_list)['Predicted'])
-    df[f'Predicted{idx}'] = pd.read_csv('vote_1/'+df_list)['Predicted']
+    # if filter(lambda x: x in df_list, config['del_code']):
+    #     continue
 
+    df[f'Predicted{idx}'] = pd.read_csv(config['data_path']+df_list)['Predicted']
+    
+df['result'] = 0
 #%%
-df = pd.read_csv("merge11.csv")
+# df = pd.read_csv("merge_067.csv")
 #%%
 def vote(user_input, dic, beta):
     input_list = str(user_input).split()+[""]
     input_list = [k for k in input_list if k != "nan"]
+
     for i in range(1, len(input_list)):
         for j in range(0, len(input_list)-i):
             input = ' '.join(input_list[j:j+i])
             if i == 1:
                 dic[input] += 1
             elif i > 1:
-                dic[input] += 1+(1/beta)
+                dic[input] += 1+beta
     return dic
 # %%
+alpa = config['alpa']
 for i in range(len(df)):
     dic = defaultdict(float)
     seq = df.iloc[i].to_list()[2:-1]
+    beta = 1 / (len(seq)**2 - len(seq)*alpa)
     for s in seq:
-        dic = vote(s, dic, len(seq)-2)
-    
+        dic = vote(s, dic, beta)
+        
     if len(dic.values()) == 0:
         max_key = [""]
         
@@ -46,7 +61,16 @@ for i in range(len(df)):
     df.loc[i,'result'] = res
 
 #%%
-df.to_csv("merge_long_word.csv", mode='w', index=False, encoding='utf-8')
+import csv
+with open("all_new.csv", 'w') as fd:
+    writer = csv.writer(fd)
+    writer.writerow(['Id', 'Predicted'])
+
+    rows = [[df.iloc[i]['Id'], df.iloc[i]['result']] for i in range(len(df)) ]
+    
+    writer.writerows(rows)
+    
+# df.to_csv("all_new.csv", mode='w', index=False, encoding='utf-8')
 # %%
 from utils import levenshtein
 
@@ -59,7 +83,7 @@ def return2distance(data1 = "dev.csv", data2 = "baseline.csv"):
 
     diff = []
 
-    for s1, s2 in zip(df1['result'], df2['result']):
+    for s1, s2 in zip(df1['Predicted'], df2['Predicted']):
         if type(s2) == float:
             s2 = ""
         if type(s1) == float:
@@ -69,5 +93,6 @@ def return2distance(data1 = "dev.csv", data2 = "baseline.csv"):
 
     return sum(diff) / len(diff)
 
-print(return2distance("merge11.csv","merge_long_word.csv"))
+print(return2distance("data/dev.csv","all_new.csv"))
+
 # %%
